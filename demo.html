@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fullscreen Image Showcase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: black; /* Set the background color to black */
+        }
+
+        audio {
+            display: none;
+        }
+
+        .image-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Set the container to take the full height of the viewport */
+        }
+
+ 
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="backgroundMusic" loop>
+        <source src="Saathiya.mp3" type="audio/mp3">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <div class="image-container">
+        <a data-fancybox="gallery" href="image1.jpg">
+            <img src="image1-thumb.jpg" alt="Image 1">
+        </a>
+        <a data-fancybox="gallery" href="image2.jpg">
+            <img src="image2-thumb.jpg" alt="Image 2">
+        </a>
+        <a data-fancybox="gallery" href="image3.jpg">
+            <img src="image3-thumb.jpg" alt="Image 3">
+        </a>
+        <a data-fancybox="gallery" href="image4.jpg">
+            <img src="image4-thumb.jpg" alt="Image 4">
+        </a>
+        <a data-fancybox="gallery" href="image5.jpg">
+            <img src="image5-thumb.jpg" alt="Image 5">
+        </a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $.fancybox.open([
+                {
+                    src  : 'image1.jpg',
+                    type : 'image',
+                    opts : {
+                        loop: true,
+                        arrows: true,
+                        infobar: false,
+                        touch: true,
+                        transitionEffect: "slide",
+                        caption : function( instance, item ) {
+                            return item.alt;
+                        }
+                    }
+                },
+                {
+                    src  : 'image2.jpg',
+                    type : 'image',
+                    opts : {
+                        loop: true,
+                        arrows: true,
+                        infobar: false,
+                        touch: true,
+                        transitionEffect: "slide",
+                        caption : function( instance, item ) {
+                            return item.alt;
+                        }
+                    }
+                },
+                {
+                    src  : 'image3.jpg',
+                    type : 'image',
+                    opts : {
+                        loop: true,
+                        arrows: true,
+                        infobar: false,
+                        touch: true,
+                        transitionEffect: "slide",
+                        caption : function( instance, item ) {
+                            return item.alt;
+                        }
+                    }
+                },
+                {
+                    src  : 'image4.jpg',
+                    type : 'image',
+                    opts : {
+                        loop: true,
+                        arrows: true,
+                        infobar: false,
+                        touch: true,
+                        transitionEffect: "slide",
+                        caption : function( instance, item ) {
+                            return item.alt;
+                        }
+                    }
+                },
+                {
+                    src  : 'image5.jpg',
+                    type : 'image',
+                    opts : {
+                        loop: true,
+                        arrows: true,
+                        infobar: false,
+                        touch: true,
+                        transitionEffect: "slide",
+                        caption : function( instance, item ) {
+                            return item.alt;
+                        }
+                    }
+                }
+            ],  {
+                index: 0 // Index of the first image
+            });
+        });
+    </script>
+
+</body>
+</html>
