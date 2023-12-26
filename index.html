@@ -133,8 +133,8 @@
   document.addEventListener('touchstart', handleTouchStart);
   document.addEventListener('touchend', handleTouchEnd);
 
-  // Play music on any touch interaction
-  document.addEventListener('touchstart', function() {
+  // Play music on swipe gestures or single taps
+  document.addEventListener('touchend', function() {
     document.getElementById('background-music').play();
   });
 </script>
