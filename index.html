@@ -114,6 +114,9 @@
       showPrevImage();
     } else if (swipeDistance < -swipeThreshold) {
       showNextImage();
+    } else {
+      // If the swipe distance is within the threshold, consider it as a tap
+      document.getElementById('background-music').play();
     }
   }
 
@@ -137,14 +140,10 @@
   // Automatically open the first image on page load
   showFullscreenImage(images[0]);
 
-  // Swipe gestures for touch devices
+  // Swipe gestures and tap for touch devices
   document.addEventListener('touchstart', handleTouchStart);
   document.addEventListener('touchend', handleTouchEnd);
 
-  // Play music on swipe gestures or single taps
-  document.addEventListener('touchend', function() {
-    document.getElementById('background-music').play();
-  });
 </script>
 
 </body>
