@@ -48,7 +48,7 @@
   <a id="prev-arrow" class="nav-arrow" onclick="showPrevImage()">&lt;</a>
   <img id="fullscreen-image" src="" alt="Fullscreen Image">
   <a id="next-arrow" class="nav-arrow" onclick="showNextImage()">&gt;</a>
-  <audio id="background-music" loop>
+  <audio id="background-music">
     <source src="Saathiya.mp3" type="audio/mp3">
     Your browser does not support the audio element.
   </audio>
@@ -59,14 +59,6 @@
   let currentImageIndex = 0;
   let touchStartX = 0;
   const fadeDuration = 500; // milliseconds
-
-  // Preload images in the background
-  const imageElements = [];
-  for (const imageSrc of images) {
-    const img = new Image();
-    img.src = imageSrc;
-    imageElements.push(img);
-  }
 
   function showNextImage() {
     currentImageIndex = (currentImageIndex + 1) % images.length;
@@ -98,7 +90,7 @@
     }, fadeDuration / 2);
 
     fullscreenContainer.style.display = 'flex';
-    backgroundMusic.play();
+    backgroundMusic.play().catch(error => console.error(error));
   }
 
   function handleTouchStart(event) {
@@ -116,7 +108,7 @@
       showNextImage();
     } else {
       // If the swipe distance is within the threshold, consider it as a tap
-      document.getElementById('background-music').play();
+      document.getElementById('background-music').play().catch(error => console.error(error));
     }
   }
 
