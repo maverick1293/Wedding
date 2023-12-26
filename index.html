@@ -23,6 +23,8 @@
     #fullscreen-image {
       max-width: 100%;
       max-height: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
     }
     .nav-arrow {
       position: absolute;
@@ -57,6 +59,7 @@
   const images = ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image4.jpg', 'image5.jpg'];
   let currentImageIndex = 0;
   let touchStartX = 0;
+  const fadeDuration = 500; // milliseconds
 
   function showNextImage() {
     currentImageIndex = (currentImageIndex + 1) % images.length;
@@ -75,7 +78,16 @@
     const fullscreenImage = document.getElementById('fullscreen-image');
     const backgroundMusic = document.getElementById('background-music');
 
-    fullscreenImage.src = imageSrc;
+    // Fade out the current image
+    fullscreenImage.style.opacity = 0;
+
+    // Set the new image source after the fade-out
+    setTimeout(() => {
+      fullscreenImage.src = imageSrc;
+      // Fade in the new image
+      fullscreenImage.style.opacity = 1;
+    }, fadeDuration / 2);
+
     fullscreenContainer.style.display = 'flex';
     backgroundMusic.play();
   }
@@ -120,8 +132,8 @@
   document.addEventListener('touchstart', handleTouchStart);
   document.addEventListener('touchend', handleTouchEnd);
 
-  // Play music on any interaction (click, swipe, or arrow click)
-  document.addEventListener('click', function() {
+  // Play music on any touch interaction
+  document.addEventListener('touchstart', function() {
     document.getElementById('background-music').play();
   });
 </script>
