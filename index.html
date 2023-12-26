@@ -1,75 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fullscreen Image Showcase</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.css" />
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background-color: black; /* Set the background color to black */
-        }
-
-        audio {
-            display: none;
-        }
-
-        .image-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh; /* Set the container to take the full height of the viewport */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+    #fullscreen-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #fullscreen-image {
+      max-width: 100%;
+      max-height: 100%;
+    }
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2em;
+      cursor: pointer;
+      color: white;
+      text-decoration: none;
+    }
+    #prev-arrow {
+      left: 10px;
+    }
+    #next-arrow {
+      right: 10px;
+    }
+  </style>
 </head>
 <body>
 
-    <audio id="backgroundMusic" loop>
-        <source src="Saathiya.mp3" type="audio/mpeg">
-        Your browser does not support the audio tag.
-    </audio>
+<div id="fullscreen-container">
+  <a id="prev-arrow" class="nav-arrow" onclick="showPrevImage()">&lt;</a>
+  <img id="fullscreen-image" src="" alt="Fullscreen Image">
+  <a id="next-arrow" class="nav-arrow" onclick="showNextImage()">&gt;</a>
+  <audio id="background-music" loop>
+    <source src="Saathiya.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+  </audio>
+</div>
 
-    <div class="image-container">
-        <!-- Add a hidden element to trigger the Fancybox manually -->
-        <a id="manualTrigger" style="display:none;" data-fancybox="gallery" href="image1.jpg">
-            <img src="image1-thumb.jpg" alt="Image 1">
-        </a>
-        <a data-fancybox="gallery" href="image2.jpg">
-            <img src="image2-thumb.jpg" alt="Image 2">
-        </a>
-        <a data-fancybox="gallery" href="image3.jpg">
-            <img src="image3-thumb.jpg" alt="Image 3">
-        </a>
-        <a data-fancybox="gallery" href="image4.jpg">
-            <img src="image4-thumb.jpg" alt="Image 4">
-        </a>
-        <a data-fancybox="gallery" href="image5.jpg">
-            <img src="image5-thumb.jpg" alt="Image 5">
-        </a>
-    </div>
+<script>
+  const images = ['image1.jpg', 'image2.jpg', 'image3.jpg', 'image4.jpg', 'image5.jpg'];
+  let currentImageIndex = 0;
+  let touchStartX = 0;
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            var audio = document.getElementById("backgroundMusic");
+  function showNextImage() {
+    currentImageIndex = (currentImageIndex + 1) % images.length;
+    const nextImageSrc = images[currentImageIndex];
+    showFullscreenImage(nextImageSrc);
+  }
 
-            // Function to play audio on any interaction
-            function playAudio() {
-                audio.play();
-                // Remove the event listener after the first interaction
-                document.removeEventListener('click', playAudio);
-            }
+  function showPrevImage() {
+    currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+    const prevImageSrc = images[currentImageIndex];
+    showFullscreenImage(prevImageSrc);
+  }
 
-            // Attach the event listener to play audio on any interaction
-            document.addEventListener('click', playAudio);
+  function showFullscreenImage(imageSrc) {
+    const fullscreenContainer = document.getElementById('fullscreen-container');
+    const fullscreenImage = document.getElementById('fullscreen-image');
+    const backgroundMusic = document.getElementById('background-music');
 
-            // Trigger Fancybox manually after the document is ready
-            $('#manualTrigger').trigger('click');
-        });
-    </script>
+    fullscreenImage.src = imageSrc;
+    fullscreenContainer.style.display = 'flex';
+    backgroundMusic.play();
+  }
+
+  function handleTouchStart(event) {
+    touchStartX = event.touches[0].clientX;
+  }
+
+  function handleTouchEnd(event) {
+    const touchEndX = event.changedTouches[0].clientX;
+    const swipeThreshold = 50;
+    const swipeDistance = touchEndX - touchStartX;
+
+    if (swipeDistance > swipeThreshold) {
+      showPrevImage();
+    } else if (swipeDistance < -swipeThreshold) {
+      showNextImage();
+    }
+  }
+
+  // Close the fullscreen view when clicking on the overlay
+  document.getElementById('fullscreen-container').addEventListener('click', function() {
+    this.style.display = 'none';
+    document.getElementById('background-music').pause();
+  });
+
+  // Prevent the fullscreen container from closing when clicking on the image or navigation arrows
+  document.getElementById('fullscreen-image').addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+  document.getElementById('prev-arrow').addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+  document.getElementById('next-arrow').addEventListener('click', function(event) {
+    event.stopPropagation();
+  });
+
+  // Automatically open the first image on page load
+  showFullscreenImage(images[0]);
+
+  // Swipe gestures for touch devices
+  document.addEventListener('touchstart', handleTouchStart);
+  document.addEventListener('touchend', handleTouchEnd);
+
+  // Play music on any interaction (click, swipe, or arrow click)
+  document.addEventListener('click', function() {
+    document.getElementById('background-music').play();
+  });
+</script>
 
 </body>
 </html>
