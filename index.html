@@ -22,21 +22,18 @@
             justify-content: center;
             height: 100vh; /* Set the container to take the full height of the viewport */
         }
-
-        .fancybox-navigation span {
-            background-color: rgba(255, 255, 255, 0.1); /* Transparent arrow color (10% transparency) */
-        }
     </style>
 </head>
 <body>
 
-    <audio id="backgroundMusic" autoplay loop>
-        <source src="Saathiya.mp3" type="audio/mp3">
+    <audio id="backgroundMusic" loop>
+        <source src="your-music-file.mp3" type="audio/mpeg">
         Your browser does not support the audio tag.
     </audio>
 
     <div class="image-container">
-        <a data-fancybox="gallery" href="image1.jpg">
+        <!-- Add a hidden element to trigger the Fancybox manually -->
+        <a id="manualTrigger" style="display:none;" data-fancybox="gallery" href="image1.jpg">
             <img src="image1-thumb.jpg" alt="Image 1">
         </a>
         <a data-fancybox="gallery" href="image2.jpg">
@@ -57,80 +54,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.7/jquery.fancybox.min.js"></script>
     <script>
         $(document).ready(function () {
-            $.fancybox.open([
-                {
-                    src  : 'image1.jpg',
-                    type : 'image',
-                    opts : {
-                        loop: true,
-                        arrows: true,
-                        infobar: false,
-                        touch: true,
-                        transitionEffect: "slide",
-                        caption : function( instance, item ) {
-                            return item.alt;
-                        }
-                    }
-                },
-                {
-                    src  : 'image2.jpg',
-                    type : 'image',
-                    opts : {
-                        loop: true,
-                        arrows: true,
-                        infobar: false,
-                        touch: true,
-                        transitionEffect: "slide",
-                        caption : function( instance, item ) {
-                            return item.alt;
-                        }
-                    }
-                },
-                {
-                    src  : 'image3.jpg',
-                    type : 'image',
-                    opts : {
-                        loop: true,
-                        arrows: true,
-                        infobar: false,
-                        touch: true,
-                        transitionEffect: "slide",
-                        caption : function( instance, item ) {
-                            return item.alt;
-                        }
-                    }
-                },
-                {
-                    src  : 'image4.jpg',
-                    type : 'image',
-                    opts : {
-                        loop: true,
-                        arrows: true,
-                        infobar: false,
-                        touch: true,
-                        transitionEffect: "slide",
-                        caption : function( instance, item ) {
-                            return item.alt;
-                        }
-                    }
-                },
-                {
-                    src  : 'image5.jpg',
-                    type : 'image',
-                    opts : {
-                        loop: true,
-                        arrows: true,
-                        infobar: false,
-                        touch: true,
-                        transitionEffect: "slide",
-                        caption : function( instance, item ) {
-                            return item.alt;
-                        }
-                    }
-                }
-            ],  {
-                index: 0 // Index of the first image
-            });
+            var audio = document.getElementById("backgroundMusic");
+
+            // Function to play audio on any interaction
+            function playAudio() {
+                audio.play();
+                // Remove the event listener after the first interaction
+                document.removeEventListener('click', playAudio);
+            }
+
+            // Attach the event listener to play audio on any interaction
+            document.addEventListener('click', playAudio);
+
+            // Trigger Fancybox manually after the document is ready
+            $('#manualTrigger').trigger('click');
         });
     </script>
 
